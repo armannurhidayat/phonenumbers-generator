@@ -21,24 +21,27 @@ ______ _                                            _                     _____ 
 """
 print(flag)
 
-prefix  = input("Prefix : ")
-dari    = input("Dari   : ")
-sampai  = input("Sampai : ")
-suffix  = input("Suffix : ")
-acak    = input("Using random Y/N? ").upper()
+prefix      = input("Prefix : ")
+dari        = input("Dari   : ")
+sampai      = input("Sampai : ")
+suffix      = input("Suffix : ")
+is_random   = input("Using random Y/N? ").upper()
 
 x = "x" * ( len(dari) )
 print( f"\nRandom Phonenumbers [ {prefix}{x}{suffix} ] \n" )
 
 with open(f'Phonenumbers-{date}.txt', 'w') as data:
-    for i in range(int(dari), int(sampai)+1):
-        if acak == 'Y':
-            length = random.randint(int(dari), int(sampai))
-        else:
-            length = "0" * ( len(dari) - len(str(i)) )
+    try:
+        for i in range(int(dari), int(sampai)+1):
+            if is_random == 'Y':
+                length = random.randint(0, 9)
+            elif is_random == 'N':
+                length = "0" * ( len(dari) - len(str(i)) )
+            
+            phone   = f"{str(prefix)}{length}{i}{suffix if suffix else ''}"
+            data.write(phone + '\n')
+            print(phone)
+        print("Finally finished! :)")
 
-        phone   = f"{str(prefix)}{length}{i}{suffix if suffix else ''}"
-        data.write(phone + '\n')
-        print(phone)
-
-print("Finally finished! :)")
+    except ValueError:
+        print("Please input number only...")
